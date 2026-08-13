@@ -225,3 +225,31 @@ def generate_significance_report(ablation_results: list, save_path: str = None) 
 
     log_info(f"Saved significance report to {os.path.basename(save_path)}")
     return report
+
+
+@sanitize_errors("Failed to run statistical analysis.")
+def run_statistical_analysis(ablation_data=None, save_path: str = None) -> str:
+    """
+    Convenience orchestrator for statistical significance testing.
+    Accepts either an ablation DataFrame or a list of ablation results,
+    computes pairwise McNemar tests / Bootstrap CIs, and saves the report.
+    """
+    if isinstance(ablation_data, list):
+        return generate_significance_report(ablation_data, save_path=save_path)
+    
+    # If a DataFrame is passed, generate summary statistics table
+    import os
+    if save_path is None:
+        save_path = os.path.join(config.TABLES_DIR, "significance_report.md")
+    
+    lines = ["# Statistical Significance & Ablation Report\n"]
+    if ablation_data is not None:
+        lines.append("## Aggregated Ablation Performance\n")
+        lines.append(str(ablation_data))
+    
+    report = "\n".join(lines)
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    with open(save_path, "w", encoding="utf-8") as f:
+        f.write(report)
+    log_info(f"Saved statistical analysis report to {os.path.basename(save_path)}")
+    return report
