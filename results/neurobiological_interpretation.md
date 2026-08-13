@@ -2,7 +2,7 @@
 
 ## 1. fMRI Functional Connectivity Findings
 
-### ✅ Frontoparietal Control (score: 0.912)
+### ✅ Frontoparietal Control (score: 0.911)
 
 **Literature**: Frontal-parietal underconnectivity during executive function tasks
 
@@ -40,7 +40,7 @@ Anterior insular cortex shows altered connectivity with amygdala and ACC. Linked
 
 ## 2. EEG Electrophysiological Findings
 
-### ✅ Occipital (score: 0.939)
+### ✅ Occipital (score: 0.970)
 
 **Literature**: Visual processing enhancements with altered connectivity
 
@@ -49,16 +49,7 @@ Occipital gamma power may be enhanced (local overconnectivity) while occipital-f
 **References**:
 - Milne et al. (2009) Clin Neurophysiol
 
-### ✅ Temporal (score: 0.893)
-
-**Literature**: Temporal cortex processing differences in social stimuli
-
-Superior temporal sulcus (STS) region shows altered gamma band activity during face and voice processing. Temporal coherence patterns differ in social vs. non-social contexts.
-
-**References**:
-- Orekhova et al. (2007) Biol Psychiatry
-
-### ✅ Parietal (score: 0.781)
+### ✅ Parietal (score: 0.850)
 
 **Literature**: Atypical alpha/beta coherence and long-range connectivity
 
@@ -68,10 +59,19 @@ Reduced parietal-frontal alpha coherence suggesting long-range underconnectivity
 - Coben et al. (2008) BMC Med
 - Murias et al. (2007) Biol Psychiatry
 
+### ✅ Central (score: 0.719)
+
+**Literature**: Mu rhythm suppression deficits during action observation
+
+Reduced mu (8-13 Hz) desynchronization over central electrodes during observation of biological motion. Linked to mirror neuron system differences and theory of mind challenges.
+
+**References**:
+- Oberman et al. (2005) Cognitive Brain Res
+
 
 ## 3. Cross-Modal Convergence
 
-**Convergence Score**: 0.67
+**Convergence Score**: 0.29
 
 **Converging Brain Networks** (flagged by both fMRI and EEG):
 
@@ -79,9 +79,6 @@ Reduced parietal-frontal alpha coherence suggesting long-range underconnectivity
   - fMRI: Altered DMN functional connectivity is the most replicated fMRI finding in ASD
 - **Frontoparietal Control**
   - fMRI: Frontal-parietal underconnectivity during executive function tasks
-- **Limbic / Temporal**
-- **Salience / Ventral Attention**
-  - fMRI: Atypical salience network connectivity and interoceptive processing
 
 
 ## 4. General ASD Connectivity Patterns

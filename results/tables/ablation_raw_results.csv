@@ -5,5 +5,5 @@ accuracy,auc,sensitivity,specificity,tp,fn,tn,fp,ablation_id,seed
 0.6,0.5,0.0,1.0,0,2,3,0,eeg_only,123
 1.0,1.0,1.0,1.0,20,0,5,0,fusion_concat,42
 0.8,1.0,1.0,0.0,20,0,0,5,fusion_concat,123
-0.8,0.75,0.75,1.0,15,5,5,0,fusion_attn,42
+1.0,1.0,1.0,1.0,20,0,5,0,fusion_attn,42
 0.8,0.5,1.0,0.0,20,0,0,5,fusion_attn,123
