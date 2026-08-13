@@ -15,9 +15,9 @@ if BASE_DIR not in sys.path:
 # pyrefly: ignore [missing-import]
 import matplotlib
 matplotlib.use("Agg")
-# pyrefly: ignore[missing-import]
+# pyrefly: ignore [missing-import]
 import matplotlib.pyplot as plt
-# pyrefly: ignore[missing-import]
+# pyrefly: ignore [missing-import]
 import numpy as np
 
 import config
@@ -50,6 +50,7 @@ def run_phase0_demo():
 
     # 2. Authentic EEG MNE Preprocessing & Connectivity Matrix
     log_info("2/2: Loading & Preprocessing EEG Data...")
+    # Use KAU ASD EEG dataset defaults: 16 channels, 256 Hz (Djemal et al., 2017)
     raw_eeg = generate_sample_eeg_raw(n_channels=config.EEG_N_CHANNELS, sfreq=256.0, duration_sec=10.0)
     clean_eeg = preprocess_eeg_raw(raw_eeg)
     psd_dict = extract_eeg_psd(clean_eeg)

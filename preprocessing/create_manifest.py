@@ -11,8 +11,8 @@ Phase 1 Deliverable:
       This script generates a METADATA-ONLY manifest; raw EEG files are NOT distributed.
 - Computes subject counts, class balance (ASD/TD), age, sex, and site distributions.
 - Confirms overlap status between ABIDE-I fMRI cohort and the EEG cohort.
-- Generates data/manifests/abide_manifest.csv, data/manifests/eeg_manifest.csv, and
-  data/manifests/cohort_summary_report.json.
+- Generates data/manifests/abide_manifest.csv, data/manifests/eeg_manifest.csv, and data/manifests/cohort_summary_report.json.
+- Enforces security validation on output schemas and file sizes.
 """
 
 import os
@@ -21,36 +21,42 @@ import json
 import pandas as pd
 # pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-import]
+from nilearn import datasets
 import config
 from security.sanitized_logging import sanitize_errors, log_info
+from security.rate_limiter import rate_limit_downloads
 from security.validation import validate_manifest_dataframe, validate_file_path
 
 
-@sanitize_errors("Failed to load authentic ABIDE phenotypic table.")
+@sanitize_errors("Failed to load ABIDE-I phenotypic data from remote repository.")
+@rate_limit_downloads(max_per_min=5, min_interval_sec=2.0)
 def load_real_abide_phenotypic() -> pd.DataFrame:
-    """Load authentic ABIDE-I phenotypic data table from downloaded CSV or Nilearn."""
+    """Fetch authentic ABIDE-I phenotypic data using Nilearn dataset fetcher or local cached CSV."""
     local_csv_path = os.path.join(config.FMRI_DIR, "ABIDE_pcp", "Phenotypic_V1_0b_preprocessed1.csv")
-    
     if os.path.exists(local_csv_path):
         validate_file_path(local_csv_path)
         df_raw = pd.read_csv(local_csv_path)
     else:
-        # pyrefly: ignore [missing-import]
-        from nilearn import datasets
-        abide = datasets.fetch_abide_pcp(data_dir=config.FMRI_DIR, n_subjects=100, derivatives=[])
+        abide = datasets.fetch_abide_pcp(
+            data_dir=config.FMRI_DIR,
+            n_subjects=None,  # Fetches full phenotypic matrix metadata table (1112 subjects)
+            pipeline="cpac",
+            derivatives=[]
+        )
         df_raw = pd.DataFrame(abide.phenotypic)
 
-    # Standardize columns
     col_map = {
         "SUB_ID": "subject_id",
         "DX_GROUP": "dx_group",
         "AGE_AT_SCAN": "age",
         "SEX": "sex",
         "SITE_ID": "site_id",
-        "FIQ": "full_iq",
-        "DSM_IV_TR": "dsm_iv_tr"
+        "FIQ": "iq_full",
+        "VIQ": "iq_verbal",
+        "PIQ": "iq_performance"
     }
-    
+
     df_clean = df_raw.rename(columns=col_map)
     df_clean["subject_id"] = df_clean["subject_id"].astype(str)
     # Map DX_GROUP: 1 -> ASD, 2 -> TD
@@ -81,7 +87,7 @@ def generate_manifests():
     #   - Sampling rate: 256 Hz
     #   - Age range: approximately 6-12 years
     #   - NOTE: Raw .edf/.eeg files require a data-sharing request to King Abdulaziz University.
-    #           This manifest is METADATA-ONLY. DO NOT fabricate or hallucinate subject data.
+    #           This manifest is METADATA-ONLY.
     KAU_CHANNELS_10_20 = [
         "FP1", "F3", "F7", "FP2", "F4", "F8",
         "T7", "P7", "T8", "P8",
@@ -165,7 +171,7 @@ def generate_manifests():
     }
 
     report_path = os.path.join(config.MANIFEST_DIR, "cohort_summary_report.json")
-    with open(report_path, "w") as f:
+    with open(report_path, "w", encoding="utf-8") as f:
         json.dump(summary_report, f, indent=2)
 
     log_info("--- Authentic Cohort Statistics Summary ---")
