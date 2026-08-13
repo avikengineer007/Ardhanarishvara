@@ -17,7 +17,9 @@ Phase 1 Deliverable:
 
 import os
 import json
+# pyrefly: ignore [missing-source, missing-import]
 import pandas as pd
+# pyrefly: ignore [missing-import]
 import numpy as np
 import config
 from security.sanitized_logging import sanitize_errors, log_info
@@ -33,6 +35,7 @@ def load_real_abide_phenotypic() -> pd.DataFrame:
         validate_file_path(local_csv_path)
         df_raw = pd.read_csv(local_csv_path)
     else:
+        # pyrefly: ignore [missing-import]
         from nilearn import datasets
         abide = datasets.fetch_abide_pcp(data_dir=config.FMRI_DIR, n_subjects=100, derivatives=[])
         df_raw = pd.DataFrame(abide.phenotypic)
@@ -108,8 +111,8 @@ def generate_manifests():
     # 3. Class Balance & Distribution Statistics
     abide_asd = int((df_abide["diagnosis"] == "ASD").sum())
     abide_td = int((df_abide["diagnosis"] == "TD").sum())
-    eeg_asd = int((df_eeg["diagnosis"] == "ASD").sum())
-    eeg_td = int((df_eeg["diagnosis"] == "TD").sum())
+    eeg_asd = (df_eeg["diagnosis"] == "ASD").sum()
+    eeg_td = (df_eeg["diagnosis"] == "TD").sum()
 
     # Age and Sex distributions
     abide_age_mean = float(np.round(df_abide["age"].astype(float).dropna().mean(), 2)) if "age" in df_abide else None

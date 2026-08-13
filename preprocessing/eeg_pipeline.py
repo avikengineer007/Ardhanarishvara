@@ -17,8 +17,11 @@ Target dataset: King Abdulaziz University (KAU) ASD EEG Dataset (Djemal et al., 
 """
 
 import os
+# pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-import]
 import h5py
+# pyrefly: ignore [missing-import]
 import mne
 import config
 from security.sanitized_logging import sanitize_errors, log_info
@@ -141,6 +144,7 @@ def compute_eeg_connectivity(raw: mne.io.Raw, subject_id: str = "eeg_sub_001") -
     n_channels = data.shape[0]
 
     # Compute Phase Locking Value (PLV) across channels via Hilbert transform (Vectorized)
+    # pyrefly: ignore [missing-import]
     from scipy.signal import hilbert
     analytic_signal = hilbert(data, axis=-1)  # (n_channels, n_samples)
     phase = np.angle(analytic_signal)

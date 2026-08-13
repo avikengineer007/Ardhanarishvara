@@ -12,8 +12,11 @@ Sequentially executes:
 
 import os
 import sys
+# pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-import]
 import torch
+# pyrefly: ignore [missing-import]
 from nilearn import datasets
 
 import config
@@ -49,6 +52,7 @@ def execute_full_pipeline():
     # ---------------------------------------------------------
     log_info("\n>>> EXECUTING PHASE 2 — fMRI Branch (Authentic ABIDE-I CPAC CC200 Timeseries)...")
     import glob
+    # pyrefly: ignore [missing-source, missing-import]
     import pandas as pd
     
     local_1d_files = sorted(glob.glob(os.path.join(config.FMRI_DIR, "ABIDE_pcp", "cpac", "nofilt_noglobal", "*_rois_cc200.1D")))
@@ -56,7 +60,7 @@ def execute_full_pipeline():
     if local_1d_files:
         log_info(f"Loading {len(local_1d_files)} authentic ABIDE-I subjects from local CPAC CC200 cache...")
         manifest_df = pd.read_csv(os.path.join(config.MANIFEST_DIR, "abide_manifest.csv"))
-        sub_to_dx = dict(zip(manifest_df["subject_id"].astype(str), manifest_df["dx_group"]))
+        sub_to_dx: dict[str, int] = {str(k): int(v) for k, v in zip(manifest_df["subject_id"], manifest_df["dx_group"])}
         
         actual_subs = len(local_1d_files)
         fmri_matrices = np.zeros((actual_subs, 200, 200))

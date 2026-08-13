@@ -7,9 +7,13 @@ Full implementations of:
 Replaces the Phase 5 placeholder with production-grade XAI utilities.
 """
 
+# pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-import]
 import torch
+# pyrefly: ignore [missing-import]
 import torch.nn as nn
+# pyrefly: ignore [missing-import]
 import torch.nn.functional as F
 
 import config
@@ -57,7 +61,7 @@ class BranchGradCAM:
         self._gradients = grad_output[0].detach()
 
     @sanitize_errors("Failed to compute Grad-CAM heatmap.")
-    def compute(self, input_tensor: torch.Tensor, target_class: int = None) -> np.ndarray:
+    def compute(self, input_tensor: torch.Tensor, target_class: int | None = None) -> np.ndarray:
         """
         Compute Grad-CAM heatmap for a single input.
 
@@ -87,6 +91,8 @@ class BranchGradCAM:
         logits.backward(gradient=one_hot, retain_graph=True)
 
         # Grad-CAM computation
+        if self._gradients is None or self._activations is None:
+            raise RuntimeError("Gradients or activations were not captured. Ensure forward and backward hooks fired correctly.")
         gradients = self._gradients[0]    # (C, H', W')
         activations = self._activations[0]  # (C, H', W')
 
@@ -115,7 +121,7 @@ class BranchGradCAM:
         return cam
 
     @sanitize_errors("Failed to compute batch Grad-CAM heatmaps.")
-    def compute_batch(self, inputs: np.ndarray, labels: np.ndarray = None) -> list:
+    def compute_batch(self, inputs: np.ndarray, labels: np.ndarray | None = None) -> list:
         """
         Compute Grad-CAM heatmaps for a batch of inputs.
 
@@ -155,7 +161,7 @@ class SHAPExplainer:
     """
 
     def __init__(self, model: nn.Module, background_data: np.ndarray,
-                 feature_names: list = None):
+                 feature_names: list[str] | None = None):
         """
         Args:
             model: Trained encoder (FMRI2DCNNEncoder or EEG2DCNNEncoder)
@@ -174,6 +180,7 @@ class SHAPExplainer:
 
         self._shap_available = False
         try:
+            # pyrefly: ignore [missing-import]
             import shap
             self._shap_lib = shap
             self._shap_available = True

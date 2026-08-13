@@ -1,5 +1,5 @@
 ablation_id,accuracy_mean,accuracy_std,auc_mean,auc_std,sensitivity_mean,sensitivity_std,specificity_mean,specificity_std,n_seeds
-fmri_only,0.8,0.0,0.75,0.3535533905932738,1.0,0.0,0.0,0.0,2
-eeg_only,0.6,0.0,0.5,0.0,0.0,0.0,1.0,0.0,2
-fusion_concat,0.9,0.14142135623730948,1.0,0.0,1.0,0.0,0.5,0.7071067811865476,2
-fusion_attn,0.9,0.14142135623730948,0.75,0.3535533905932738,1.0,0.0,0.5,0.7071067811865476,2
+fmri_only,0.8,,1.0,,1.0,,0.0,,1
+eeg_only,0.6,,0.5,,0.0,,1.0,,1
+fusion_concat,1.0,,1.0,,1.0,,1.0,,1
+fusion_attn,1.0,,1.0,,1.0,,1.0,,1

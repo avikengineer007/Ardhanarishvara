@@ -8,8 +8,11 @@ Also includes UnimodalClassifier for single-branch baseline comparison.
 """
 
 import math
+# pyrefly: ignore [missing-import]
 import torch
+# pyrefly: ignore [missing-import]
 import torch.nn as nn
+# pyrefly: ignore [missing-import]
 import torch.nn.functional as F
 
 import config

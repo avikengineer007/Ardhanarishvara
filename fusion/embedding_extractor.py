@@ -5,7 +5,9 @@ and caches 128-dim embeddings to .npy files for fusion training.
 """
 
 import os
+# pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-import]
 import torch
 
 import config
@@ -25,7 +27,7 @@ def get_device():
 
 
 @sanitize_errors("Failed to load frozen encoder.")
-def load_frozen_encoder(modality: str, checkpoint_path: str = None):
+def load_frozen_encoder(modality: str, checkpoint_path: str | None = None):
     """
     Load encoder checkpoint and freeze all parameters for embedding extraction.
 
@@ -72,7 +74,7 @@ def load_frozen_encoder(modality: str, checkpoint_path: str = None):
 
 
 @sanitize_errors("Failed to extract embeddings from frozen encoder.")
-def extract_all_embeddings(model=None, matrices: np.ndarray = None, batch_size: int = 32) -> np.ndarray:
+def extract_all_embeddings(model: torch.nn.Module | None = None, matrices: np.ndarray | None = None, batch_size: int = 32):
     """
     Run frozen encoder on all connectivity matrices to extract 128-dim embeddings.
     If called without arguments, loads pre-extracted embeddings (fmri_embeddings, fmri_labels, eeg_embeddings, eeg_labels).
@@ -85,7 +87,7 @@ def extract_all_embeddings(model=None, matrices: np.ndarray = None, batch_size: 
     Returns:
         (N, 128) numpy array of embeddings (or 4-tuple if called without arguments)
     """
-    if model is None and matrices is None:
+    if model is None or matrices is None:
         return load_or_extract_all_modalities()
 
     device = next(model.parameters()).device

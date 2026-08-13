@@ -6,7 +6,9 @@ Saves visualization figures to notebooks/ outputs.
 """
 
 import os
+# pyrefly: ignore [missing-import]
 import matplotlib.pyplot as plt
+# pyrefly: ignore [missing-import]
 import numpy as np
 import config
 from preprocessing.fmri_pipeline import process_fmri_subject

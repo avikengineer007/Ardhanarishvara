@@ -4,7 +4,9 @@ Implements McNemar's test and paired bootstrap CI for rigorous model comparison.
 Goes beyond raw accuracy — provides p-values and confidence intervals.
 """
 
+# pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-import]
 from scipy import stats
 
 import config
@@ -69,8 +71,8 @@ def mcnemar_test(y_true: np.ndarray, preds_a: np.ndarray, preds_b: np.ndarray) -
         significant = False
 
     result = {
-        "chi2": float(chi2),
-        "p_value": float(p_value),
+        "chi2": chi2,
+        "p_value": p_value,
         "b_count": b,
         "c_count": c,
         "significant": significant,
@@ -88,8 +90,8 @@ def mcnemar_test(y_true: np.ndarray, preds_a: np.ndarray, preds_b: np.ndarray) -
 
 @sanitize_errors("Failed to compute paired bootstrap CI.")
 def paired_bootstrap_ci(y_true: np.ndarray, scores_a: np.ndarray, scores_b: np.ndarray,
-                        metric_fn=None, n_iterations: int = None,
-                        ci_level: float = None, seed: int = 42) -> dict:
+                        metric_fn=None, n_iterations: int | None = None,
+                        ci_level: float | None = None, seed: int = 42) -> dict:
     """
     Paired bootstrap confidence interval for the difference between two models.
 
@@ -162,7 +164,7 @@ def paired_bootstrap_ci(y_true: np.ndarray, scores_a: np.ndarray, scores_b: np.n
 
 
 @sanitize_errors("Failed to generate significance report.")
-def generate_significance_report(ablation_results: list, save_path: str = None) -> str:
+def generate_significance_report(ablation_results: list, save_path: str | None = None) -> str:
     """
     Generate a formatted significance report comparing all model pairs.
 
@@ -228,7 +230,7 @@ def generate_significance_report(ablation_results: list, save_path: str = None) 
 
 
 @sanitize_errors("Failed to run statistical analysis.")
-def run_statistical_analysis(ablation_data=None, save_path: str = None) -> str:
+def run_statistical_analysis(ablation_data=None, save_path: str | None = None) -> str:
     """
     Convenience orchestrator for statistical significance testing.
     Accepts either an ablation DataFrame or a list of ablation results,

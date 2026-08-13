@@ -6,7 +6,9 @@ Enforces MANDATORY SECURITY REQUIREMENTS #2 and #4:
 """
 
 import os
+# pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-source, missing-import]
 import pandas as pd
 from security.sanitized_logging import (
     FileUploadSecurityException,

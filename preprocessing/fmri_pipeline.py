@@ -7,8 +7,11 @@ Enforces strict security validation, rate-limiting, and error sanitization.
 """
 
 import os
+# pyrefly: ignore [missing-import]
 import numpy as np
+# pyrefly: ignore [missing-import]
 import h5py
+# pyrefly: ignore [missing-import]
 from nilearn import datasets
 import config
 from security.sanitized_logging import sanitize_errors, log_info
